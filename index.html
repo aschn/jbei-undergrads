@@ -3,14 +3,14 @@
 <html>
   <head>
     <meta charset='utf-8'>
-    <title>Sheetsee Table Demo</title>
+    <title>JBEI undergrads for Mitch</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,400italic|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
-    <link rel="shortcut icon" href="favicon.png">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script type='text/javascript' src='js/tabletop1.4.2.js'></script>
     <script type='text/javascript' src='js/sheetsee.js'></script>
-    <link rel='stylesheet' type='text/css' href='css/style.css'>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
   </head>
   <style>
     #Pagination {border-top: 4px solid #CCF4FF; margin: 10px 0px; padding-top: 10px; display: inline-block;}
@@ -26,17 +26,19 @@
   <div class="container">
     <h1>Candidates</h1>
     <p><em><a href="https://docs.google.com/a/github.com/spreadsheet/ccc?key=1a5NHIzjzR0Eu3TeZXgNbs4L60VN6qzNsDNu0vhDCe3o&usp=drive_web#gid=0" target="_blank">spreadsheet</a></em><p>
-    <input id="fullTableFilter" type="text" placeholder="filter by.."></input>
-    <div id="fullTable"></div>
+    <input id="fullTableFilter" type="text" placeholder="filter by..."></input>
+    <div id="fullTable">loading...</div>
 </div>
 
 <script id="fullTable_template" type="text/html">
-  <table>
+  <table class="table">
     <tr>
       <th class="tHeader">Timestamp</th>
       <th class="tHeader">Name</th>
       <th class="tHeader">Email</th>
-      <th class="tHeader">Full-time Student</th>
+      <th class="tHeader">Full-time Student?</th>
+      <th class="tHeader">Resume</th>
+      <th class="tHeader">Cover letter</th>
     </tr>
       {{#rows}}
         <tr>
@@ -44,6 +46,48 @@
           <td>{{What is your name?}}</td>
           <td>{{What email address do you prefer to be contacted at?}}</td>
           <td>{{Are you a full-time student at UC Berkeley?}}</td>
+          <td>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalResume{{index}}">
+              <span class="glyphicon glyphicon-new-window"></span>
+            </button>
+            <div class="modal fade" id="myModalResume{{index}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Resume</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>{{Please paste a plain text CV/Resume}}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalCover{{index}}">
+              click me!
+            </button>
+            <div class="modal fade" id="myModalCover{{index}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Cover letter</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>{{Please paste a short plain text Cover Letter}}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+          </td>
         </tr>
       {{/rows}}
   </table>
@@ -56,15 +100,26 @@
     Tabletop.init({
       key: URL,
       callback: showInfo,
-      simpleSheet: true,
-      debug: true
+      simpleSheet: true
     });
   })
 
   function showInfo(data) {
-    console.log(data);
-    var tableOptions = {"data": data
-    , "pagination": 10, "tableDiv": "#fullTable", "filterDiv": "#fullTableFilter"};
+    // add index to data
+    var indexed_data = [];
+    for (idx in data) {
+       d = data[idx];
+       d.index = idx;
+       indexed_data.push(d);
+    }
+    console.log(indexed_data);
+
+    var tableOptions = {
+      "data": indexed_data,
+      "pagination": 10,
+      "tableDiv": "#fullTable",
+      "filterDiv": "#fullTableFilter"
+    };
     Sheetsee.makeTable(tableOptions);
     Sheetsee.initiateTableFilter(tableOptions);
   }
