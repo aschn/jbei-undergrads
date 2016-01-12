@@ -19,6 +19,7 @@
     .no-pag:hover {color: #acacac;}
     input {border: none; border-bottom: 1px solid #333;margin: 10px 0px; width: 200px; font-size: 16px; padding-bottom: 6px;}
     .tHeader {padding: 8px; cursor: pointer; text-align: left;}
+    .tHeader::after {content: " \2193 \2191 "; font-size: 10px; padding-left: 3px; cursor: pointer;}
     .photo {display: inline-block; float: left; width: 100px;}
     #photogrid {overflow: auto;}
   </style>
@@ -27,18 +28,34 @@
     <h1>Candidates</h1>
     <p><em><a href="https://docs.google.com/a/github.com/spreadsheet/ccc?key=1a5NHIzjzR0Eu3TeZXgNbs4L60VN6qzNsDNu0vhDCe3o&usp=drive_web#gid=0" target="_blank">spreadsheet</a></em><p>
     <input id="fullTableFilter" type="text" placeholder="filter by..."></input>
-    <div id="fullTable">loading...</div>
+    <div id="fullTable" class="table-responsive">loading...</div>
 </div>
 
 <script id="fullTable_template" type="text/html">
-  <table class="table">
+  <table class="table table-hover">
+    <!--
+      use tHeader to make the column sortable
+    -->
     <tr>
       <th class="tHeader">Timestamp</th>
       <th class="tHeader">Name</th>
       <th class="tHeader">Email</th>
       <th class="tHeader">Full-time Student?</th>
-      <th class="tHeader">Resume</th>
-      <th class="tHeader">Cover letter</th>
+      <th class="tHeader">Year</th>
+      <th class="tHeader">Major</th>
+      <th class="tHeader">GPA</th>
+      <th>Interests</th>
+      <th>Coursework</th>
+      <th class="tHeader">Days</th>
+      <th class="tHeader">10hr/wk?</th>
+      <th class="tHeader">Summer?</th>
+      <th class="tHeader">Post-grad</th>
+      <th class="tHeader">Start date</th>
+      <th class="tHeader">Credit?</th>
+      <th class="tHeader">Mentor</th>
+      <th class="tHeader">Mentor email</th>
+      <th>Resume</th>
+      <th>Cover letter</th>
     </tr>
       {{#rows}}
         <tr>
@@ -46,6 +63,39 @@
           <td>{{What is your name?}}</td>
           <td>{{What email address do you prefer to be contacted at?}}</td>
           <td>{{Are you a full-time student at UC Berkeley?}}</td>
+          <td>{{What year are you?}}</td>
+          <td>{{What is your major or intended major?}}</td>
+          <td>{{What is your GPA}}</td>
+          <td>{{What are your research interests}}</td>
+          <td>
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalCoursework{{index}}">
+              <span class="glyphicon glyphicon-new-window"></span>
+            </button>
+            <div class="modal fade" id="myModalCoursework{{index}}" tabindex="-1" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Coursework</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>{{Relevant coursework}}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+          </td>
+          <td>{{Please list which day(s) you are available to work in lab}}</td>
+          <td>{{Are you willing to commute to JBEI and conduct ON AVERAGE at least 10 hours of research per week?}}</td>
+          <td>{{Would you be interested in conducting summer research at JBEI?}}</td>
+          <td>{{What are your plans after graduation?}}</td>
+          <td>{{When would be your ideal start date?}}</td>
+          <td>{{Are you willing to work for RESEARCH CREDIT?}}</td>
+          <td>{{Mentor}}</td>
+          <td>{{Mentor Email}}</td>
           <td>
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalResume{{index}}">
               <span class="glyphicon glyphicon-new-window"></span>
@@ -68,8 +118,8 @@
             </div><!-- /.modal -->
           </td>
           <td>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalCover{{index}}">
-              click me!
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalCover{{index}}">
+              <span class="glyphicon glyphicon-new-window"></span>
             </button>
             <div class="modal fade" id="myModalCover{{index}}" tabindex="-1" role="dialog">
               <div class="modal-dialog">
