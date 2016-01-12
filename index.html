@@ -8,7 +8,7 @@
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js'></script>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900,400italic|Source+Code+Pro:400' rel='stylesheet' type='text/css'>
     <link rel="shortcut icon" href="favicon.png">
-    <script type='text/javascript' src='js/tabletop1.3.4.js'></script>
+    <script type='text/javascript' src='js/tabletop1.4.2.js'></script>
     <script type='text/javascript' src='js/sheetsee.js'></script>
     <link rel='stylesheet' type='text/css' href='css/style.css'>
   </head>
@@ -24,7 +24,7 @@
   </style>
 <body>
   <div class="container">
-    <h1>All Pennies</h1>
+    <h1>Candidates</h1>
     <p><em><a href="https://docs.google.com/a/github.com/spreadsheet/ccc?key=1a5NHIzjzR0Eu3TeZXgNbs4L60VN6qzNsDNu0vhDCe3o&usp=drive_web#gid=0" target="_blank">spreadsheet</a></em><p>
     <input id="fullTableFilter" type="text" placeholder="filter by.."></input>
     <div id="fullTable"></div>
@@ -40,10 +40,10 @@
     </tr>
       {{#rows}}
         <tr>
-          <td>{{timestamp}}</td>
-          <td>{{name}}</td>
-          <td>{{email}}</td>
-          <td>{{fulltimestudent}}</td>
+          <td>{{Timestamp}}</td>
+          <td>{{What is your name?}}</td>
+          <td>{{What email address do you prefer to be contacted at?}}</td>
+          <td>{{Are you a full-time student at UC Berkeley?}}</td>
         </tr>
       {{/rows}}
   </table>
@@ -52,12 +52,12 @@
 
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function() {
-   // var URL = "1a5NHIzjzR0Eu3TeZXgNbs4L60VN6qzNsDNu0vhDCe3o";
-    var URL = "https://docs.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=1a5NHIzjzR0Eu3TeZXgNbs4L60VN6qzNsDNu0vhDCe3o&single=true&gid=0&output=html";
+    var URL = "1a5NHIzjzR0Eu3TeZXgNbs4L60VN6qzNsDNu0vhDCe3o";
     Tabletop.init({
       key: URL,
       callback: showInfo,
-      simpleSheet: true
+      simpleSheet: true,
+      debug: true
     });
   })
 
